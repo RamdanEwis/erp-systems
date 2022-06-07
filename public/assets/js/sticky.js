@@ -5,14 +5,14 @@ $(document).ready(function(){
       stickyPos = stickyElement.offset().top, //Distance from the top of the window.
       stickyHeight;
 
-  
+
 
   ///Create a negative margin to prevent content 'jumps':
   stickyElement.after('<div class="jumps-prevent"></div>');
   function jumpsPrevent() {
     stickyHeight = stickyElement.innerHeight();
     stickyElement.css({"margin-bottom":"-" + stickyHeight + "px"});
-    stickyElement.next().css({"padding-top": + stickyHeight + "px"}); 
+    stickyElement.next().css({"padding-top": + stickyHeight + "px"});
   };
   jumpsPrevent(); //Run.
 

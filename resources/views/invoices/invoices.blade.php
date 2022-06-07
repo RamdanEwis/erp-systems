@@ -19,7 +19,7 @@
         <div class="my-auto">
             <div class="d-flex">
                 <h4 class="content-title mb-0 my-auto">الفواتير</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ قائمة
-                    الفواتير</span>
+                    فواتير البيع</span>
             </div>
         </div>
 
@@ -73,7 +73,7 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
                         <a href="invoices/create" class="modal-effect btn  btn-outline-success" ><i
-                                class="fas fa-plus"></i>&nbsp; اضافة فاتورة</a>
+                                class="fas fa-plus"></i>&nbsp;   اضافة فاتورة بيع</a>
                     </div>
                     @can('اضافة فاتورة')
                         <a href="invoices/create" class="modal-effect btn btn-sm btn-primary" style="color:white"><i

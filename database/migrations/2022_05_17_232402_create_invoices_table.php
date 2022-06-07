@@ -20,13 +20,14 @@ class CreateInvoicesTable extends Migration
             $table->date('due_number');
             $table->string('product_id');
             $table->string('category_id');
-            $table->string('discount');
-            $table->decimal('value_vat',8,2);
+            $table->string('discount')->nullable();
+            $table->decimal('value_vat',8,2)->nullable();
             $table->decimal('total',8,2);
             $table->string('status',50);
             $table->integer('value_status');
             $table->text('note')->nullable();
-            $table->string('user_id');
+            $table->unsignedBigInteger('user_id');
+
             $table->softDeletes();
             $table->timestamps();
         });

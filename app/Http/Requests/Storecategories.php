@@ -25,7 +25,7 @@ class Storecategories extends FormRequest
     {
         return [
             'category_name' => 'required|unique:categories|max:255',
-            'description' => 'required',
+
         ];
     }
 
@@ -39,7 +39,6 @@ class Storecategories extends FormRequest
         return [
             'category_name.required' => 'يرجي ادخال اسم القسم',
             'category_name.unique' => 'هذا القسم موجود مسبقا',
-            'description.required' => 'يرجي ادخال اسم القسم',
         ];
     }
 }

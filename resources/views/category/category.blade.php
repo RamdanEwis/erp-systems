@@ -98,12 +98,9 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <?php $i=0 ?>
-
                                                 @foreach($categorys as $category)
-                                                    <?php $i++ ?>
-                                                    <tr>
-                                                        <td>{{$i}}</td>
+                                                     <tr>
+                                                        <td>{{$loop->iteration}}</td>
                                                         <td>{{$category->category_name}}</td>
                                                         <td>{{$category->description}}</td>
                                                         <td>{{$category->created_at}}</td>
@@ -112,8 +109,42 @@
                                                         <td>
                                                             <button class="btn btn-outline-success btn-sm" data-effect="effect-scale"
                                                                data-id="{{ $category->id }}" data-category_name="{{ $category->category_name }}"
-                                                               data-description="{{ $category->description }}" data-toggle="modal" href="#modaldemo9"
+                                                               data-description="{{ $category->description }}" data-toggle="modal" href="#update-model-{{ $category->id }}"
                                                                title="تعديل" >تعديل</button>
+                                                            <!-- Modal edite categories  effects -->
+                                                            <div class="modal" id="update-model-{{ $category->id }}">
+                                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                    <div class="modal-content modal-content-demo">
+
+                                                                        <form method="post" action="{{ route('categories.update', $category) }}">
+                                                                            @method('PATCH')
+                                                                            @csrf
+                                                                            <div class="modal-header">
+                                                                                <h6 class="modal-title"> تعديل قسم</h6>
+
+                                                                                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="form-group">
+                                                                                    <label>اسم القسم</label>
+                                                                                    <input value="{{ $category->category_name }}"  type="text" id="category_name" class="form-control" name="category_name" required autocomplete="off" >
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label>الملاحظات</label>
+                                                                                    <textarea  role="5" class="form-control" id="description" name="description"  autocomplete="off" >{{ $category->description }}</textarea>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button class="btn ripple btn-primary" type="submit">حفظ</button>
+                                                                                    <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">اغلاق</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- End Modal effects-->
+
 
                                                             <button class="btn btn-outline-danger btn-sm " data-effect="effect-scale"
                                                                data-id="{{ $category->id }}" data-category_name="{{ $category->category_name }}" data-toggle="modal"
@@ -147,7 +178,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>الملاحظات</label>
-                                    <textarea  role="5" class="form-control" name="description" required autocomplete="الوصف" autofocus></textarea>
+                                    <textarea  role="5" class="form-control" name="description"  autocomplete="الوصف" autofocus></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn ripple btn-primary" type="submit">حفظ</button>
@@ -160,41 +191,6 @@
             </div>
             <!-- End Modal effects-->
 
-                <!-- Modal edite categories  effects -->
-                <div class="modal" id="modaldemo9">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content modal-content-demo">
-
-                            <form method="post" action="categories/update">
-                                {{method_field('patch')}}
-                                @csrf
-                                <div class="modal-header">
-                                    <h6 class="modal-title"> تعديل قسم</h6>
-
-                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label>اسم القسم</label>
-                                        <input  value="" type="hidden" id="id" name="id">
-                                        <input  type="text" id="category_name" class="form-control" name="category_name" required autocomplete="off" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label>الملاحظات</label>
-
-                                        <textarea  role="5" class="form-control" id="description" name="description" required autocomplete="off" ></textarea>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn ripple btn-primary" type="submit">حفظ</button>
-                                        <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">اغلاق</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Modal effects-->
 
             <!-- Modal delete categories  effects -->
             <div class="modal" id="modaldemo10">

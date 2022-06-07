@@ -21,8 +21,14 @@ Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
 Route::resource('categories', 'CategoryController')->middleware('auth');
 Route::resource('invoices', 'InvoiceController')->middleware('auth');
+Route::resource('invoiceBuy', 'InvoiceBuyController')->middleware('auth');
 Route::resource('products', 'ProductController')->middleware('auth');
+Route::resource('clients', 'ClientController')->middleware('auth');
+Route::resource('suppliers', 'SupplierController')->middleware('auth');
 
+
+Route::post('clients/Payment_supplier', 'ClientController@Payment')->middleware('auth')->name('Payment_clients');
+Route::post('supplier/Payment_supplier', 'SupplierController@Payment')->middleware('auth')->name('Payment_supplier');
 Route::get('/category/{id}', 'InvoiceController@getprouduct') ;
 Route::get('/{page}', 'AdminController@index')->middleware('auth') ;
 

@@ -3,9 +3,9 @@
     <!--- Internal Select2 css-->
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
     <!---Internal Fileupload css-->
-    <link href="{{ URL::asset('assets/plugins/fileuploads/css/fileupload.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('assets/plugins/fileuploads/css/fileupload.css') }}" rel="stylesheet" type="text/css"/>
     <!---Internal Fancy uploader css-->
-    <link href="{{ URL::asset('assets/plugins/fancyuploder/fancy_fileupload.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('assets/plugins/fancyuploder/fancy_fileupload.css') }}" rel="stylesheet"/>
     <!--Internal Sumoselect css-->
     <link rel="stylesheet" href="{{ URL::asset('assets/plugins/sumoselect/sumoselect-rtl.css') }}">
     <!--Internal  TelephoneInput css-->
@@ -27,76 +27,147 @@
     <!-- breadcrumb -->
 @endsection
 @section('content')
-@if (session()->has('Add'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>{{ session()->get('Add') }}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
+    @if (session()->has('Add'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ session()->get('Add') }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <!-- row -->
-        <div class="row">
-            <div class="col-lg-12 col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <form action="{{ route('invoices.store') }}" method="post" enctype="multipart/form-data"
-                            autocomplete="off">
-                            {{ csrf_field() }}
-                            {{-- 1 --}}
-                            <div class="row">
-                                <div class="col">
-                                    <label for="inputName" class="control-label">رقم الفاتورة</label>
-                                    <input type="text" class="form-control" id="inputName" name="invoice_number"
-                                        title="يرجي ادخال رقم الفاتورة" required>
-                                </div>
-                                <div class="col">
-                                    <label>تاريخ الفاتورة</label>
-                                    <input class="form-control fc-datepicker" name="invoice_Date" placeholder="YYYY-MM-DD"
-                                        type="text" value="{{ date('Y-m-d') }}" required>
-                                </div>
-                            </div>
-                            {{-- 2 --}}
-                            <div class="row">
-                                <div class="col">
-                                    <label for="inputName" class="control-label">القسم</label>
-                                    <select name="Section" class="form-control SlectBox" onclick="console.log($(this).val())"
-                                        onchange="console.log('change is firing')">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('invoices.store') }}" method="post" class="form">
+                        @csrf
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="customer_name">اسم العميل</label>
+                                    <select name="clients" class="unit form-control SlectBox"
+                                            onclick="console.log($(this).val())"
+                                            onchange="console.log('change is firing')">
                                         <!--placeholder-->
-                                        <option value="" selected disabled>حدد القسم</option>
-                                        @foreach ($categorys as $category)
-                                            <option value="{{ $category->id }}"> {{ $category->category_name }}</option>
+                                        <option value="" selected disabled>حدد العميل</option>
+                                        @foreach ($clients as $client)
+                                            <option value="{{ $client->id }}"> {{ $client->name }}</option>
                                         @endforeach
                                     </select>
-                                </div>
-                                <div class="col">
-                                    <label for="inputName" class="control-label">المنتج</label>
-                                    <select id="product" name="product" class="form-control">
-                                    </select>
-                                </div>
 
+                                    @error('customer_name')<span
+                                        class="help-block text-danger">{{ $message }}</span>@enderror
+                                </div>
                             </div>
-
-                            {{-- 5 --}}
-                            <div class="row">
-                                <div class="col">
-                                    <label for="exampleTextarea">ملاحظات</label>
-                                    <textarea class="form-control" id="exampleTextarea" name="note" rows="3"></textarea>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="customer_mobile">رقم هاتف العميل</label>
+                                    <input type="text" name="customer_mobile" class="form-control">
+                                    @error('customer_mobile')<span
+                                        class="help-block text-danger">{{ $message }}</span>@enderror
                                 </div>
-                            </div><br>
-                            <p class="text-danger">* صيغة المرفق pdf, jpeg ,.jpg , png </p>
-                            <h5 class="card-title">المرفقات</h5>
-
-                            <div class="col-sm-12 col-md-12">
-                                <input type="file" name="pic" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                                    data-height="70" />
-                            </div><br>
-
-                            <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary">حفظ البيانات</button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="invoice_number">رقم الفاتوره</label>
+                                    <input type="text" name="invoice_number" class="form-control">
+                                    @error('invoice_number')<span
+                                        class="help-block text-danger">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="invoice_date">تاريخ الفاتوره</label>
+                                    <input type="text" name="invoice_date" class="form-control pickdate"
+                                           value="{{ now() }}">
+                                    @error('invoice_date')<span
+                                        class="help-block text-danger">{{ $message }}</span>@enderror
+                                </div>
+                            </div>
+                        </div>
+                        <br><br><br><br>
+                        <div class="table-responsive">
+                            <table class="table" id="invoice_details">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>القسم</th>
+                                    <th>اسم المنتج</th>
+                                    <th>العدد</th>
+                                    <th>السعر</th>
+                                    <th>الاجمالي</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="cloning_row" id="0">
+                                    <td>#</td>
+                                    <td>
+                                        <select name="Section" class="unit form-control SlectBox"
+                                                onclick="console.log($(this).val())"
+                                                onchange="console.log('change is firing')">
+                                            <!--placeholder-->
+                                            <option value="" selected disabled>حدد القسم</option>
+                                            @foreach ($categorys as $category)
+                                                <option
+                                                    value="{{ $category->id }}"> {{ $category->category_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('unit')<span
+                                            class="help-block text-danger">{{ $message }}</span>@enderror
+                                    </td>
+                                    <td>
+                                        <select id="product" name="product" class="unit form-control">
+                                        </select>
+                                        @error('product_name')<span
+                                            class="help-block text-danger">{{ $message }}</span>@enderror
+                                    </td>
+                                    <td>
+                                        <input type="number" name="quantity[0]" step="0.01" id="quantity"
+                                               class="quantity form-control">
+                                        @error('quantity')<span
+                                            class="help-block text-danger">{{ $message }}</span>@enderror
+                                    </td>
+                                    <td>
+                                        <input type="number" name="unit_price[0]" step="0.01" id="unit_price"
+                                               class="unit_price form-control">
+                                        @error('unit_price')<span
+                                            class="help-block text-danger">{{ $message }}</span>@enderror
+                                    </td>
+                                    <td>
+                                        <input type="number" step="0.01" name="row_sub_total[0]" id="row_sub_total"
+                                               class="row_sub_total form-control" readonly="readonly">
+                                        @error('row_sub_total')<span
+                                            class="help-block text-danger">{{ $message }}</span>@enderror
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                                <tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        <button type="button" class="btn_add btn btn-outline-success">اضافه منتج
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"></td>
+                                    <td colspan="2" class="text-left">الاجمالي</td>
+                                    <td><input type="number" step="0.01" name="sub_total" id="sub_total"
+                                               class="sub_total form-control" readonly="readonly"></td>
+                                </tr>
+
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div class="text- pt-5">
+                            <button type="submit" name="save" class="btn btn-lg btn-block btn-primary">حفظ</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -140,17 +211,17 @@
     </script>
 
     <script>
-        $(document).ready(function() {
-            $('select[name="Section"]').on('change', function() {
+        $(document).ready(function () {
+            $('select[name="Section"]').on('change', function () {
                 var SectionId = $(this).val();
                 if (SectionId) {
                     $.ajax({
                         url: "{{ URL::to('category') }}/" + SectionId,
                         type: "GET",
                         dataType: "json",
-                        success: function(data) {
+                        success: function (data) {
                             $('select[name="product"]').empty();
-                            $.each(data, function(key, value) {
+                            $.each(data, function (key, value) {
                                 $('select[name="product"]').append('<option value="' +
                                     value + '">' + value + '</option>');
                             });
@@ -164,38 +235,35 @@
     </script>
 
     <script>
+        $(document).ready(function () {
+            $('#invoice_details').on('keyup blur', '.quantity', function () {
+                let $row = $(this).closest('tr');
+                let quantity = $row.find('.quantity').val() || 0;
+                let unit_price = $row.find('.unit_price').val() || 0;
 
-        function myFunction() {
+                $row.find('.row_sub_total').val((quantity * unit_price).toFixed(2));
 
-            var Amount_Commission = parseFloat(document.getElementById("Amount_Commission").value);
+                $('#sub_total').val(sum_total('.row_sub_total'));
+            });
+            $('#invoice_details').on('keyup blur', '.unit_price', function () {
+                let $row = $(this).closest('tr');
+                let quantity = $row.find('.quantity').val() || 0;
+                let unit_price = $row.find('.unit_price').val() || 0;
 
-            var Discount = parseFloat(document.getElementById("Discount").value);
+                $row.find('.row_sub_total').val((quantity * unit_price).toFixed(2));
 
-            var Rate_VAT = parseFloat(document.getElementById("Rate_VAT").value);
-
-            var Value_VAT = parseFloat(document.getElementById("Value_VAT").value);
-
-            var Amount_Commission2 = Amount_Commission - Discount;
-
-            if (typeof Amount_Commission === 'undefined' || !Amount_Commission) {
-
-                alert('يرجي ادخال مبلغ العمولة ');
-
-            } else {
-
-                var intResults = Amount_Commission2 * Rate_VAT / 100;
-
-                var intResults2 = parseFloat(intResults + Amount_Commission2);
-
-                sumq = parseFloat(intResults).toFixed(2);
-
-                sumt = parseFloat(intResults2).toFixed(2);
-
-                document.getElementById("Value_VAT").value = sumq;
-
-                document.getElementById("Total").value = sumt;
+                $('#sub_total').val(sum_total('.row_sub_total'));
+            });
+            let sum_total = function ($selector) {
+                let sum = 0;
+                $($selector).each(function () {
+                    let selectorVal = $(this).val() != '' ? $(this).val() : 0;
+                    sum += parseFloat(selectorVal);
+                });
+                return sum.toFixed(2);
             }
-        }
+
+        });
     </script>
 
 @endsection

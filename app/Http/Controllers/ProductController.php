@@ -42,6 +42,7 @@ class ProductController extends Controller
     {
         Product::create([
             'product_name' => $request->product_name,
+            'price' => $request->price,
             'category_id' => $request->categories_id,
             'description' => $request->description,
         ]);
@@ -76,7 +77,7 @@ class ProductController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */
     public function update(Request $request)
     {
@@ -84,16 +85,17 @@ class ProductController extends Controller
         $id_Product = $request->pro_id;
         $request->validate([
             'Product_name' => 'required|max:255|unique:products,Product_name,'.$id_Product,
-            'description' => 'required',
+            'price' => 'required',
         ],[
             'Product_name.required' => 'يرجي ادخال اسم المنتج',
             'Product_name.unique' => 'هذا المنتج موجود يرجي تغير الاسم',
-            'description.required' => 'يرجي ادخال اسم المنتج',
+            'price.required' => 'يرجي ادخال سعر المنتج',
         ]);
         $Product = Product::find($id_Product);
         $Product->update([
             'Product_name' => $request->Product_name,
             'category_id' => $id_category,
+            'price' => $request->price,
             'description' => $request->description,
         ]);
         session()->flash('update','تم تعديل المنتج بنجاح');

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Model\Client;
 use App\Model\Invoice;
 use App\Model\Category;
 use App\Model\product;
@@ -28,7 +29,8 @@ class InvoiceController extends Controller
     public function create()
     {
         $categorys = Category::all();
-        return view('invoices.add_invoice',compact('categorys'));
+        $clients = Client::all();
+        return view('invoices.add_invoice',compact('categorys','clients'));
     }
 
     /**
@@ -39,7 +41,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

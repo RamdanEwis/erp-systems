@@ -36,7 +36,7 @@
         </div>
     @endif
     @if(session()->has('update'))
-        <div  class="col-md-12 alert alert-success show text-center role="alert">
+        <div  class="col-md-12 alert alert-success show text-center" role="alert">
         <strong>{{session()->get('update')}}</strong>
         <button type="button"class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -44,7 +44,7 @@
         </div>
     @endif
     @if(session()->has('delete'))
-        <div  class="col-md-12 alert alert-danger show text-center role="alert">
+        <div  class="col-md-12 alert alert-danger show text-center" role="alert">
         <strong>{{session()->get('delete')}}</strong>
         <button type="button"class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -67,7 +67,7 @@
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <button type="button" class="button x-small btn-outline-success" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i>&nbsp; اضافة منتج</button><br><br>
+                        <button type="button" class="button x-small btn-outline-success btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i>&nbsp; اضافة منتج</button><br><br>
                     </div>
                 </div>
                 <div class="card-body">
@@ -78,6 +78,8 @@
                                 <th class="border-bottom-0">#</th>
                                 <th class="border-bottom-0">اسم المنتج</th>
                                 <th class="border-bottom-0">اسم القسم</th>
+                                <th class="border-bottom-0">سعر البيع</th>
+                                <th class="border-bottom-0">عدد المخزن</th>
                                 <th class="border-bottom-0"> تاريخ الاضافه</th>
                                 <th class="border-bottom-0">تاريخ التعديل</th>
                                 <th class="border-bottom-0">ملاحظات</th>
@@ -94,6 +96,8 @@
                                     <td>{{ $i }}</td>
                                     <td>{{$Products->product_name}}</td>
                                     <td>{{$Products->category->category_name }}</td>
+                                    <td>{{$Products->price}}</td>
+                                    <td>{{$Products->stock}}</td>
                                     <td>{{$Products->created_at}}</td>
                                     <td>{{$Products->updated_at}}</td>
                                     <td>{{$Products->description}}</td>
@@ -101,7 +105,7 @@
                                     <td>
                                         <button class="btn btn-outline-success btn-sm"
                                                 data-name="{{ $Products->product_name }}" data-pro_id="{{ $Products->id }}"
-                                                data-section_name="{{$Products->category->category_name }}"
+                                                data-section_name="{{$Products->category->category_name }}" data-price="{{ $Products->price }}"
                                                 data-description="{{ $Products->description }}" data-toggle="modal"
                                                 data-target="#edit_Product">تعديل</button>
 
@@ -137,6 +141,10 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">اسم المنتج</label>
                                 <input type="text" class="form-control" id="product_name" name="product_name" required >
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">سعر المنتج</label>
+                                <input type="text" class="form-control" id="price" name="price" required >
                             </div>
                             <label class="my-1 mr-2" for="inlineFormCustomSelectPref">القسم</label>
                             <select name="categories_id" id="categories_id" class="form-control" required>
@@ -185,7 +193,13 @@
                                 <input type="text" class="form-control" name="Product_name" id="Product_name">
                             </div>
 
+                            <div class="form-group">
+                                <label for="title">سعر المنتج :</label>
+                                <input type="text" class="form-control" name="price" id="price">
+                            </div>
+
                             <label class="my-1 mr-2" for="inlineFormCustomSelectPref">القسم</label>
+
                             <select name="category_name" id="category_name" class="custom-select my-1 mr-sm-2" required>
                                 @foreach ($categores as $category)
                                     <option>{{ $category->category_name }}</option>
@@ -274,11 +288,13 @@
             var button = $(event.relatedTarget)
             var Product_name = button.data('name')
             var category_name = button.data('category_name')
+            var price = button.data('price')
             var pro_id = button.data('pro_id')
             var description = button.data('description')
             var modal = $(this)
             modal.find('.modal-body #Product_name').val(Product_name);
             modal.find('.modal-body #section_name').val(category_name);
+            modal.find('.modal-body #price').val(price);
             modal.find('.modal-body #description').val(description);
             modal.find('.modal-body #pro_id').val(pro_id);
         })
