@@ -10,17 +10,11 @@ class CreateInvoiceBuysTable extends Migration {
 	{
 		Schema::create('invoice_buys', function(Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->string('product',50);
-            $table->bigInteger('category_id')->unsigned();
-            $table->string('number_product');
             $table->bigInteger('supplier_id')->unsigned();
-            $table->bigInteger('price_buy')->unsigned();
-            $table->decimal('total',12,2);
-            $table->string('status',50)->default('غير مدفوعه');
-            $table->integer('value_status');
+            $table->decimal('total',12,2)->default(0.00);
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('invoice_number');
             $table->date('invoice_date');
+            $table->integer('status')->default(0);
             $table->timestamps();
 		});
 	}

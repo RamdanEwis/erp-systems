@@ -13,4 +13,8 @@ class Supplier extends Model
     {
         return $this->belongsTo('App\User');
     }
+    public function InvoiceBuy()
+    {
+        return $this->hasMany( InvoiceBuy::class,'supplier_id','id');
+    }
 }

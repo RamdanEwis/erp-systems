@@ -1,4 +1,7 @@
 @extends('layouts.master')
+@section('title')
+    empty
+@endsection
 @section('css')
 @endsection
 @section('page-header')
@@ -14,6 +17,8 @@
 							<button type="button" class="btn btn-info btn-icon ml-2"><i class="mdi mdi-filter-variant"></i></button>
 						</div>
 						<div class="pr-1 mb-3 mb-xl-0">
+							<button type="button" class="btn btn-danger btn-icon ml-2"><i class="mdi mdi-star"></i></button>
+						</div>
 							<button type="button" class="btn btn-danger btn-icon ml-2"><i class="mdi mdi-star"></i></button>
 						</div>
 						<div class="pr-1 mb-3 mb-xl-0">

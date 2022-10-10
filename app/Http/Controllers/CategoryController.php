@@ -3,18 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Model\Category;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use  Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\Storecategories;
 use App\Http\Requests\Updatecategories;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
+
+    public   function __construct()
+    {
+        $this->middleware('permission:الاقسام', ['only' => 'index']);
+
+    }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View|void
+     * @return Factory|\Illuminate\Contracts\View\View|View|void
      */
     public function index()
     {
@@ -36,8 +46,8 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Storecategories $request)
     {
@@ -73,9 +83,9 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param \App\Category $category
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Updatecategories $request, Category $category)
     {
@@ -88,8 +98,8 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Category $category
-     * @return Response
+     * @param Request $request
+     * @return RedirectResponse|Redirector
      */
     public function destroy(Request $request)
     {

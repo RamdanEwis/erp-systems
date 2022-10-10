@@ -10,15 +10,10 @@ class CreateInvoiceSalesTable extends Migration {
 	{
 		Schema::create('invoice_sales', function(Blueprint $table) {
 			$table->bigIncrements('id');
-			$table->integer('number_product');
-			$table->unsignedBigInteger('client_id')->unsigned();
-			$table->unsignedBigInteger('price_sale')->unsigned();
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('category_id');
+            $table->bigInteger('client_id')->unsigned();
             $table->decimal('total',8,2);
-            $table->string('status',50)->default(1);
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('invoice_number');
+            $table->integer('status')->default(0);
             $table->date('invoice_date');
             $table->timestamps();
 		});

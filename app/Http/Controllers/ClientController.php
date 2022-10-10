@@ -15,6 +15,14 @@ use Illuminate\View\View;
 
 class ClientController extends Controller
 {
+
+
+
+    public   function __construct()
+    {
+        $this->middleware('permission:العملاء', ['only' => 'index']);
+
+    }
     /**
      * Display a listing of the resource.
      *

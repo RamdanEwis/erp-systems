@@ -9,12 +9,14 @@ class InvoiceBuy extends Model
 protected $guarded = [];
 
 
-    public function category()
+
+    public function BuysDetails()
     {
-        return $this->belongsTo( Category::class);
+        return $this->hasMany( BuysDetails::class,'invoice_number','id');
     }
-    public function InvoiceBayProduct()
+
+    public function Supplier()
     {
-        return $this->hasMany( InvoiceBayProduct::class);
+        return $this->belongsTo( Supplier::class,'supplier_id','id');
     }
 }

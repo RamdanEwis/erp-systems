@@ -87,7 +87,9 @@
                             <div class="card mg-b-20">
                                 <div class="card-header pb-0">
                                     <div class="col-sm-6 col-md-12 col-xl-12">
+                                        @can('اضافة مورد')
                                         <a class="modal-effect btn btn-outline-success  btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldemo18">اضافه مورد</a>
+                                       @endcan
                                     </div>
 
                                 </div>
@@ -107,7 +109,6 @@
                                             </thead>
                                             <tbody>
                                             <?php $i=0 ?>
-
                                                 @foreach($Suppliers as $Supplier)
                                                     <?php $i++ ?>
                                                     <tr>
@@ -118,19 +119,22 @@
                                                         <td>{{$Supplier->updated_at}}</td>
                                                         <td>Name : {{$Supplier->user->name}}</td>
                                                         <td>
+
                                                             <button class="btn btn-outline-primary btn-sm" data-effect="effect-scale"
                                                                data-id="{{ $Supplier->id }}" data-name="{{ $Supplier->name }}"
                                                                data-amountdue="{{ $Supplier->AmountDue }}" data-toggle="modal" href="#modaldemo15"
                                                                title="تعديل" >دفعه الي المورد</button>
-
+                                                            @can('تعديل مورد')
                                                             <button class="btn btn-outline-success btn-sm" data-effect="effect-scale"
                                                                     data-id="{{ $Supplier->id }}" data-name="{{ $Supplier->name }}"
                                                                     data-amountdue="{{ $Supplier->AmountDue }}" data-toggle="modal" href="#modaldemo9"
                                                                     title="تعديل" >تعديل</button>
-
+                                                          @endcan
+                                                            @can('حذف مورد')
                                                             <button class="btn btn-outline-danger btn-sm " data-effect="effect-scale"
                                                                data-id="{{ $Supplier->id }}" data-name="{{ $Supplier->name }}" data-toggle="modal"
                                                                href="#modaldemo10" title="حذف" >حذف</button>
+                                                            @endcan
                                                         </td>
                                                     </tr>
                                                 @endforeach

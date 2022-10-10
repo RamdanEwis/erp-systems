@@ -39,15 +39,14 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label>كلمة المرور</label>
-
-                                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
+                                                    <label for="password">كلمة المرور</label>
+                                                    <input  id="password" type="password"  class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                                                     @error('password')
                                                     <span class="invalid-feedback" role="alert">
-                                                  <strong>{{ $message }}</strong>
-                                                  </span>
+                                                    <strong>{{ $message }}</strong>
+                                                    </span>
                                                     @enderror
+                                                </div>
                                                     <div class="form-group row">
                                                         <div class="col-md-6 offset-md-4">
                                                             <div class="form-check">
@@ -59,7 +58,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+
                                                 <button type="submit" class="btn btn-main-primary btn-block">
                                                     {{ __('تسجيل الدخول') }}
                                                 </button>

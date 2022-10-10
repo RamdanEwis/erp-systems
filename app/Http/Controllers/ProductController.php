@@ -8,18 +8,21 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('permission:المنتجات', ['only => index']);
+    }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-
-        $categores = Category::all();
-        $products = Product::all();
-
-        return view('products.products', compact('categores','products'));
+        return view('products.products', [
+            'categores' => Category::all(),
+            'products' => Product::all()
+        ]);
     }
 
     /**

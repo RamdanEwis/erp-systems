@@ -12,6 +12,12 @@ use  Illuminate\Support\Facades\Auth;
 
 class SupplierController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('permission:الموردين', ['only => index']);
+    }
+
+
     /**
      * Display a listing of the resource.
      *

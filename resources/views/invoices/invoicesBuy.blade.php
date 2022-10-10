@@ -4,14 +4,14 @@
 @stop
 @section('css')
     <!-- Internal Data table css -->
-    <link href="{{ URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"/>
     <link href="{{ URL::asset('assets/plugins/datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"/>
     <link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
     <!--Internal   Notify -->
-    <link href="{{ URL::asset('assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet"/>
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
@@ -30,7 +30,7 @@
 
     @if (session()->has('delete_invoice'))
         <script>
-            window.onload = function() {
+            window.onload = function () {
                 notif({
                     msg: "تم حذف الفاتورة بنجاح",
                     type: "success"
@@ -42,7 +42,7 @@
 
     @if (session()->has('Status_Update'))
         <script>
-            window.onload = function() {
+            window.onload = function () {
                 notif({
                     msg: "تم تحديث حالة الدفع بنجاح",
                     type: "success"
@@ -54,7 +54,7 @@
 
     @if (session()->has('restore_invoice'))
         <script>
-            window.onload = function() {
+            window.onload = function () {
                 notif({
                     msg: "تم استعادة الفاتورة بنجاح",
                     type: "success"
@@ -72,104 +72,62 @@
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <a href="invoiceBuy/create" class="modal-effect btn  btn-outline-success" ><i
-                                class="fas fa-plus"></i>&nbsp;   اضافة فاتورة شراء</a>
+                        <a href="{{route('invoiceBuy.create')}}" class="modal-effect btn  btn-outline-success"><i
+                                class="fas fa-plus"></i>&nbsp; اضافة فاتورة شراء</a>
                     </div>
-                    @can('اضافة فاتورة')
-                        <a href="invoicesBuy/create" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
-                                class="fas fa-plus"></i>&nbsp; اضافة فاتورة</a>
-                    @endcan
 
-                    @can('تصدير EXCEL')
-                        <a class="modal-effect btn btn-sm btn-primary" href="{{ url('export_invoices') }}"
-                            style="color:white"><i class="fas fa-file-download"></i>&nbsp;تصدير اكسيل</a>
-                    @endcan
+
 
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='50'style="text-align: center">
+                        <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='50'
+                               style="text-align: center">
                             <thead>
-                                <tr>
-                                    <th class="border-bottom-0">#</th>
-                                    <th class="border-bottom-0">رقم الفاتورة</th>
-                                    <th class="border-bottom-0">تاريخ القاتورة</th>
-                                    <th class="border-bottom-0">المنتج</th>
-                                    <th class="border-bottom-0">القسم</th>
-                                    <th class="border-bottom-0">الاجمالي</th>
-                                    <th class="border-bottom-0">الحالة</th>
-                                    <th class="border-bottom-0">العمليات</th>
-                                </tr>
+                            <tr>
+                                <th class="border-bottom-0">#</th>
+                                <th class="border-bottom-0">رقم الفاتورة</th>
+                                <th class="border-bottom-0">تاريخ القاتورة</th>
+                                <th class="border-bottom-0">تفاصيل الفاتوره</th>
+                                <th class="border-bottom-0">الاجمالي</th>
+                                <th class="border-bottom-0">العمليات</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach ($invoices as $invoice)
-                                    <tr>
-                                        <td>{{$loop->iteration}}</td>
-                                        <td>{{ $invoice->invoice_number }} </td>
-                                        <td>{{ $invoice->invoice_date }}</td>
-                                        <td>{{ $invoice->product }}</td>
-                                        <td><a
-                                                href="{{ url('InvoicesDetails') }}/{{ $invoice->id }}">{{ $invoice->category->category_name }}</a>
-                                        </td>
-
-                                        <td>{{ $invoice->total }}</td>
-                                        <td>
-                                            @if ($invoice->Value_Status == 1)
-                                                <span class="text-success">{{ $invoice->status }}</span>
-                                            @elseif($invoice->Value_Status == 2)
-                                                <span class="text-danger">{{ $invoice->status }}</span>
-                                            @else
-                                                <span class="text-warning">{{ $invoice->status }}</span>
-                                            @endif
-
-                                        </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button aria-expanded="false" aria-haspopup="true"
+                            @foreach ($invoices as $invoice)
+                                <tr>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{ $invoice->id }} </td>
+                                    <td>{{ $invoice->invoice_date }}</td>
+                                    <td><a
+                                            href="{{ url('invoiceBuy') }}/{{ $invoice->id }}">تفاصيل الفاتوره</a>
+                                    </td>
+                                    <td>{{ $invoice->total }}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button aria-expanded="false" aria-haspopup="true"
                                                     class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
-                                                    type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
-                                                <div class="dropdown-menu tx-13">
-                                                    @can('تعديل الفاتورة')
-                                                        <a class="dropdown-item"
-                                                            href=" {{ url('edit_invoice') }}/{{ $invoice->id }}">تعديل
-                                                            الفاتورة</a>
-                                                    @endcan
-
-                                                    @can('حذف الفاتورة')
-                                                        <a class="dropdown-item" href="#" data-invoice_id="{{ $invoice->id }}"
-                                                            data-toggle="modal" data-target="#delete_invoice"><i
-                                                                class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
-                                                            الفاتورة</a>
-                                                    @endcan
-
-                                                    @can('تغير حالة الدفع')
-                                                        <a class="dropdown-item"
-                                                            href="{{ URL::route('Status_show', [$invoice->id]) }}"><i
-                                                                class=" text-success fas
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    fa-money-bill"></i>&nbsp;&nbsp;تغير
-                                                            حالة
-                                                            الدفع</a>
-                                                    @endcan
-
-                                                    @can('ارشفة الفاتورة')
-                                                        <a class="dropdown-item" href="#" data-invoice_id="{{ $invoice->id }}"
-                                                            data-toggle="modal" data-target="#Transfer_invoice"><i
-                                                                class="text-warning fas fa-exchange-alt"></i>&nbsp;&nbsp;نقل الي
-                                                            الارشيف</a>
-                                                    @endcan
-
-                                                    @can('طباعةالفاتورة')
-                                                        <a class="dropdown-item" href="Print_invoice/{{ $invoice->id }}"><i
-                                                                class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة
-                                                            الفاتورة
-                                                        </a>
-                                                    @endcan
-                                                </div>
+                                                    type="button">العمليات<i class="fas fa-caret-down ml-1"></i>
+                                            </button>
+                                            <div class="dropdown-menu tx-13">
+                                                    <a class="dropdown-item"
+                                                       href=" {{ url('invoiceBuy') }}/{{ $invoice->id }}/edit">تعديل
+                                                        الفاتورة</a>
+                                                    <a class="dropdown-item" href="#"
+                                                       data-invoice_id="{{ $invoice->id }}"
+                                                       data-toggle="modal" data-target="#delete_invoice"><i
+                                                            class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
+                                                        الفاتورة</a>
+                                                    <a class="dropdown-item" href="invoiceBuy/{{ $invoice->id }}"><i
+                                                            class="text-success fas fa-eye"></i>&nbsp;&nbsp;عرض الفاتوره
+                                                        الفاتورة
+                                                    </a>
                                             </div>
+                                        </div>
 
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                    </td>
+                                </tr>
+                            @endforeach
 
                             </tbody>
                         </table>
@@ -182,7 +140,7 @@
 
     <!-- حذف الفاتورة -->
     <div class="modal fade" id="delete_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -190,9 +148,9 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <form action="{{ route('invoices.destroy', 'test') }}" method="post">
-                        {{ method_field('delete') }}
-                        {{ csrf_field() }}
+                    <form action="invoiceBuy/destroy" method="post">
+                    {{ method_field('delete') }}
+                    {{ csrf_field() }}
                 </div>
                 <div class="modal-body">
                     هل انت متاكد من عملية الحذف ؟
@@ -207,35 +165,6 @@
         </div>
     </div>
 
-
-    <!-- ارشيف الفاتورة -->
-    <div class="modal fade" id="Transfer_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">ارشفة الفاتورة</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <form action="{{ route('invoices.destroy', 'test') }}" method="post">
-                        {{ method_field('delete') }}
-                        {{ csrf_field() }}
-                </div>
-                <div class="modal-body">
-                    هل انت متاكد من عملية الارشفة ؟
-                    <input type="hidden" name="invoice_id" id="invoice_id" value="">
-                    <input type="hidden" name="id_page" id="id_page" value="2">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                    <button type="submit" class="btn btn-success">تاكيد</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     </div>
     <!-- row closed -->
@@ -268,8 +197,33 @@
     <script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/notify/js/notifit-custom.js') }}"></script>
 
+
     <script>
-        $('#delete_invoice').on('show.bs.modal', function(event) {
+        $(document).ready(function () {
+            $('select[name="category_id"]').on('change', function () {
+                var category_id = $(this).val();
+                if (category_id) {
+                    $.ajax({
+                        url: "{{ URL::to('category') }}/" + category_id,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            $('select[name="product"]').empty();
+                            $.each(data, function (key, value) {
+                                $('select[name="product"]').append('<option value="' +
+                                    value + '">' + value + '</option>');
+                            });
+                        },
+                    });
+                } else {
+                    console.log('AJAX load did not work');
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $('#delete_invoice').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var invoice_id = button.data('invoice_id')
             var modal = $(this)
@@ -279,7 +233,7 @@
     </script>
 
     <script>
-        $('#Transfer_invoice').on('show.bs.modal', function(event) {
+        $('#Transfer_invoice').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var invoice_id = button.data('invoice_id')
             var modal = $(this)
@@ -289,11 +243,11 @@
     </script>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function () {
             $('#invoice_details').on('keyup blur', '.quantity', function () {
                 let $row = $(this).closest('tr');
-                let quantity = $row.find('.quantity').val() || 0 ;
-                let unit_price = $row.find('.unit_price').val() || 0 ;
+                let quantity = $row.find('.quantity').val() || 0;
+                let unit_price = $row.find('.unit_price').val() || 0;
 
                 $row.find('.row_sub_total').val((quantity * unit_price).toFixed(2));
 
@@ -301,8 +255,8 @@
             });
             $('#invoice_details').on('keyup blur', '.unit_price', function () {
                 let $row = $(this).closest('tr');
-                let quantity = $row.find('.quantity').val() || 0 ;
-                let unit_price = $row.find('.unit_price').val() || 0 ;
+                let quantity = $row.find('.quantity').val() || 0;
+                let unit_price = $row.find('.unit_price').val() || 0;
 
                 $row.find('.row_sub_total').val((quantity * unit_price).toFixed(2));
 
@@ -311,7 +265,7 @@
             let sum_total = function ($selector) {
                 let sum = 0;
                 $($selector).each(function () {
-                    let selectorVal = $(this).val() != '' ? $(this).val() : 0 ;
+                    let selectorVal = $(this).val() != '' ? $(this).val() : 0;
                     sum += parseFloat(selectorVal);
                 });
                 return sum.toFixed(2);

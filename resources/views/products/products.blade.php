@@ -67,7 +67,9 @@
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
+                        @can('اضافة منتج')
                         <button type="button" class="button x-small btn-outline-success btn-block" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i>&nbsp; اضافة منتج</button><br><br>
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body">
@@ -103,15 +105,18 @@
                                     <td>{{$Products->description}}</td>
                                    {{--<td>{{ $Products->categories->category_name }}</td>--}}
                                     <td>
+                                        @can('تعديل منتج')
                                         <button class="btn btn-outline-success btn-sm"
                                                 data-name="{{ $Products->product_name }}" data-pro_id="{{ $Products->id }}"
                                                 data-section_name="{{$Products->category->category_name }}" data-price="{{ $Products->price }}"
                                                 data-description="{{ $Products->description }}" data-toggle="modal"
                                                 data-target="#edit_Product">تعديل</button>
-
+                                        @endcan
+                                        @can('حذف منتج')
                                         <button class="btn btn-outline-danger btn-sm " data-pro_id="{{ $Products->id }}"
                                                 data-product_name="{{ $Products->product_name }}" data-toggle="modal"
                                                 data-target="#modaldemo9">حذف</button>
+                                        @endcan
                                     </td>
                                 </tr>
 

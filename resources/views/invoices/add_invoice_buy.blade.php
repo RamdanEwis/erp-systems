@@ -49,6 +49,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <a href="{{ route('invoiceBuy.index') }}" class="btn btn-primary ml-auto"><i class="fa fa-home"></i> جميع الفواتير</a><br><br><br>
                     <form action="{{ route('invoiceBuy.store') }}" method="post" class="form">
                         @csrf
                         <div class="row">
@@ -72,15 +73,6 @@
 
                         </div>
                         <div class="row">
-
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="invoice_number">رقم الفاتوره</label>
-                                    <input type="text" name="invoice_number" class="form-control">
-                                    @error('invoice_number')<span
-                                        class="help-block text-danger">{{ $message }}</span>@enderror
-                                </div>
-                            </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="invoice_date">تاريخ الفاتوره</label>
@@ -108,39 +100,44 @@
                                 <tr class="cloning_row" id="0">
                                     <td>#</td>
                                     <td>
-                                        <select name="category_id" class="unit form-control SlectBox"
+                                        <select name="category_id[0]" class="unit form-control "
                                                 onclick="console.log($(this).val())"
                                                 onchange="console.log('change is firing')">
                                             <!--placeholder-->
                                             <option value="" selected disabled>حدد القسم</option>
                                             @foreach ($categorise as $category)
                                                 <option
-                                                    value="{{ $category->id }}"> {{ $category->category_name }}</option>
+                                                    value="{{ $category->category_name }}"> {{ $category->category_name }}</option>
                                             @endforeach
                                         </select>
-                                        @error('category_id')<span
-                                            class="help-block text-danger">{{ $message }}</span>@enderror
+                                        @error('category_id')
+                                        <span class="help-block text-danger">{{ $message }}</span>@enderror
                                     </td>
                                     <td>
-                                        <select id="product_id" name="product" class="unit form-control">
+                                        <select id="product_id" name="product_name[0]" class="product_name form-control">
+                                            <option value="" selected disabled>حدد المنتج</option>
+                                            @foreach ($products as $product)
+                                                <option
+                                                    value="{{ $product->product_name }}"> {{ $product->product_name }}</option>
+                                            @endforeach
                                         </select>
-                                        @error('product_id')<span
+                                        @error('product')<span
                                             class="help-block text-danger">{{ $message }}</span>@enderror
                                     </td>
                                     <td>
-                                        <input type="number" name="number_product" step="0.01" id="quantity"
-                                               class="number_product form-control">
+                                        <input type="number" name="quantity[0]" step="0.01" id="quantity"
+                                               class="quantity form-control">
                                         @error('number_product')<span
                                             class="help-block text-danger">{{ $message }}</span>@enderror
                                     </td>
                                     <td>
-                                        <input type="number" name="price_buy" step="0.01" id="price_buy"
-                                               class="price_buy form-control">
-                                        @error('price_buy')<span
+                                        <input type="number" name="unit_price[0]" step="0.01" id="unit_price"
+                                               class="unit_price form-control">
+                                        @error('unit_price')<span
                                             class="help-block text-danger">{{ $message }}</span>@enderror
                                     </td>
                                     <td>
-                                        <input type="number" step="0.01" name="total_row" id="row_sub_total"
+                                        <input type="number" step="0.01" name="row_sub_total[0]" id="row_sub_total"
                                                class="row_sub_total form-control" readonly="readonly">
                                         @error('row_sub_total')<span
                                             class="help-block text-danger">{{ $message }}</span>@enderror
@@ -161,11 +158,9 @@
                                     <td><input type="number" step="0.01" name="total" id="total"
                                                class="total form-control" readonly="readonly"></td>
                                 </tr>
-
                                 </tfoot>
                             </table>
                         </div>
-
                         <div class="text- pt-5">
                             <button type="submit" name="save" class="btn btn-lg btn-block btn-primary">حفظ</button>
                         </div>
@@ -205,6 +200,12 @@
     <script src="{{ URL::asset('assets/plugins/spectrum-colorpicker/spectrum.js') }}"></script>
     <!-- Internal form-elements js -->
     <script src="{{ URL::asset('assets/js/form-elements.js') }}"></script>
+    <!-- Internal form-validtion js -->
+    <script src="{{ URL::asset('js/form_validtion/jquery.form.js ') }}"></script>
+    <script src="{{ URL::asset('js/form_validtion/jquery.validate.min.js ') }}"></script>
+    <script src="{{ URL::asset('js/form_validtion/additional-methods.min.js ') }}"></script>
+    <script src="{{ URL::asset('js/form_validtion/messages_ar.js') }}"></script>
+
 
     <script>
         var date = $('.fc-datepicker').datepicker({
@@ -214,44 +215,20 @@
 
     <script>
         $(document).ready(function () {
-            $('select[name="category_id"]').on('change', function () {
-                var categoryId = $(this).val();
-                if (categoryId) {
-                    $.ajax({
-                        url: "{{ URL::to('category') }}/" + categoryId,
-                        type: "GET",
-                        dataType: "json",
-                        success: function (data) {
-                            $('select[name="product"]').empty();
-                            $.each(data, function (key, value) {
-                                $('select[name="product"]').append('<option value="' +
-                                    value + '">' + value + '</option>');
-                            });
-                        },
-                    });
-                } else {
-                    console.log('AJAX load did not work');
-                }
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            $('#invoice_details').on('keyup blur', '.number_product', function () {
+            $('#invoice_details').on('keyup blur', '.quantity', function () {
                 let $row = $(this).closest('tr');
-                let number_product = $row.find('.number_product').val() || 0;
-                let price_buy = $row.find('.price_buy').val() || 0;
+                let quantity = $row.find('.quantity').val() || 0;
+                let unit_price = $row.find('.unit_price').val() || 0;
 
-                $row.find('.row_sub_total').val((number_product * price_buy).toFixed(2));
-
+                $row.find('.row_sub_total').val((quantity * unit_price).toFixed(2));
                 $('#total').val(sum_total('.row_sub_total'));
             });
-            $('#invoice_details').on('keyup blur', '.price_buy', function () {
+            $('#invoice_details').on('keyup blur', '.unit_price', function () {
                 let $row = $(this).closest('tr');
-                let number_product = $row.find('.number_product').val() || 0;
-                let price_buy = $row.find('.price_buy').val() || 0;
+                let quantity = $row.find('.quantity').val() || 0;
+                let unit_price = $row.find('.unit_price').val() || 0;
 
-                $row.find('.row_sub_total').val((number_product * price_buy).toFixed(2));
+                $row.find('.row_sub_total').val((quantity * unit_price).toFixed(2));
 
                 $('#total').val(sum_total('.row_sub_total'));
             });
@@ -263,8 +240,83 @@
                 });
                 return sum.toFixed(2);
             }
+            $(document).on('click', '.btn_add', function () {
+                let tr_count = $('#invoice_details').find('tr.cloning_row:last').length;
+                let numberIncr = tr_count > 0 ? parseInt($('#invoice_details').find('tr.cloning_row:last').attr('id')) + 1 : 0 ;
 
+                $('#invoice_details').find('tbody').append($('' +
+                    '<tr class="cloning_row" id="' + numberIncr + '"> ' +
+                    '<td> <button type="button" class="btn btn-danger btn-sm btn_delete_prudct"><i class="fa fa-minus"></i></button> </td>' +
+                    '<td>' +
+                    '<select name="category_id[' + numberIncr + ']" class="unit form-control SlectBox" onclick="console.log($(this).val()) ">' +
+                    '<option value="" selected disabled>حدد القسم</option>' +
+                    '@foreach ($categorise as $category) ' +
+                    '<option ' +
+                    'value=" {{ $category->category_name }} "> {{ $category->category_name }} </option> ' +
+                    ' @endforeach' +
+                    '</select>' +
+                   ' @error('category_id')<span ' +
+                   '  class="help-block text-danger">{{ $message }}</span>@enderror ' +
+                    '</td>' +
+                    '<td>' +
+                    '<select  name="product_name[' + numberIncr + ']" class="unit form-control SlectBox"> ' +
+                    '<option value="" selected disabled>حدد المنتج</option>' +
+                    '@foreach ($products as $product) ' +
+                    '<option ' +
+                    'value=" {{ $product->product_name }} "> {{ $product->product_name }} </option> ' +
+                    ' @endforeach' +
+                    '</select>' +
+                    '  @error('product')<span' +
+                    ' class="help-block text-danger">{{ $message }}</span>@enderror' +
+                    '</td>' +
+                    '<td>' +
+                    '<input type="number" name="quantity[' + numberIncr + ']" step="0.01"  class="quantity form-control"> ' +
+                    '       @error('quantity')<span' +
+                    '   class="help-block text-danger">{{ $message }}</span>@enderror' +
+                    '</td>' +
+                    '<td>' +
+                    '<input type="number" name="unit_price[' + numberIncr + ']" step="0.01" class="unit_price form-control"> ' +
+                    '     @error('unit_price')<span' +
+                    '  class="help-block text-danger">{{ $message }}</span>@enderror' +
+                    '</td>' +
+                    '<td>' +
+                    ' <input type="number" step="0.01" name="row_sub_total[' + numberIncr + ']"  class="row_sub_total form-control" readonly="readonly"> ' +
+                    '         @error('row_sub_total')<span' +
+                    ' class="help-block text-danger">{{ $message }}</span>@enderror' +
+                    ' </td> ' +
+                    ' </tr>'));
+            });
+
+            $(document).on('click', '.btn_delete_prudct' , function (e) {
+                e.preventDefault();
+                $(this).parent().parent().remove();
+                $('#total').val(sum_total('.row_sub_total'));
+            });
+
+            $('form').on('submit' , function ($e) {
+                $('select.product_name').each(function () { $(this).rules("add",{required:true}) ; }) ;
+                $('input.invoice_number').each(function () { $(this).rules("add",{required:true}); }) ;
+                $('input.invoice_date').each(function () { $(this).rules("add",{required:true}); }) ;
+                $('select.category_id').each(function () { $(this).rules("add",{required:true}); }) ;
+                $('input.unit_price').each(function () { $(this).rules("add",{required:true}); }) ;
+                e.preventDefault();
+            });
+
+            $('form').validate({
+                rules:{
+                    '  supplier_id' :   {required:true,digits:true},
+                    ' invoice_number ' : {required:true,digits:true},
+                    ' invoice_date ':  {required:true},
+                    ' category_id ' : {required:true,digits:true},
+                    ' product_name' :  {required:true,digits:true},
+                    ' unit_price' :  {required:true}
+                },
+                submitHandler:function (form) {
+                    form.submit();
+                }
+            });
         });
     </script>
 
 @endsection
+
